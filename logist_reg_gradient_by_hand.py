@@ -23,6 +23,7 @@ X[:50,:] = X[:50,:] - 5*np.ones((50,d2))
 # center the last 50 points at (5, 5)
 X[50:,:] = X[50:,:] + 5*np.ones((50,d2))
 
+#first 50 is 1 last 50 is 0
 Y_an=np.array([0]*50 + [1]*50)
 
 def sigmoid(z):
@@ -62,9 +63,14 @@ class logistic_regression(object):
           self.iter=maxiter
           
       def fit(self,X,Y):
+          #add intercept term
           ones = np.ones((np.shape(X)[0], 1))
           X= np.concatenate((ones, X), axis=1)
+          
+          #another way to initialize
           #w = np.random.randn(np.shape(X)[1]+ 1)
+            
+          #initialize to zero weight
           w=np.zeros(np.shape(X)[1])
           iter_last=self.iter
           costs_record = []
@@ -84,10 +90,12 @@ class logistic_regression(object):
           return self
           
       def predict(self,X):
+          #add intercept term
           ones = np.ones((np.shape(X)[0], 1))
           X= np.concatenate((ones, X), axis=1)
           row=np.shape(X)[0]
           predict_y=[]
+          #transform probability back to zero one
           for i in range(0,row):
               if sigmoid(np.dot(X[i],self.w))>0.5:
                  answer=1
