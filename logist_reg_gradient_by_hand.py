@@ -83,6 +83,7 @@ class logistic_regression(object):
                  break
               w=w-self.eta*gradient(X,w,Y)
           
+          #show the cross_entropy of each iteration , estimate gradient process more
           plt.clf()
           plt.plot(range(0,iter_last), costs_record)
           plt.show()
