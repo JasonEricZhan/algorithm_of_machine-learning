@@ -77,7 +77,7 @@ class logistic_regression(object):
           w=w-self.eta* gradient(X,w,Y,self.l2reg)
           for i in range(0,self.iter):
               costs_record.append(cross_entropy(X,w,Y,self.l2reg))
-              if np.any(gradient(X,w,Y,self.l2reg) ==0):
+              if np.all(gradient(X,w,Y,self.l2reg) ==0):
                  iter_last=i
                  break
               w=w-self.eta*gradient(X,w,Y,self.l2reg)
