@@ -111,7 +111,7 @@ y_axis=-x_aix
 plt.plot(x_aix, y_axis)
 plt.show()
 
-#harder data to be linear separable
+#The data is harder to be linear separable
 
 X=np.array([[-0.4, 0.3],
           [-0.3, -0.1],
