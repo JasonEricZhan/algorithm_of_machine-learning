@@ -29,7 +29,7 @@ def sigmoid(z):
     g=1/(np.exp(-z)+1)
     return g
 
-
+#error measure
 def cross_entropy(x,w,y,l2reg):
     loss=0
     row=np.shape(y)[0]
@@ -65,7 +65,11 @@ class logistic_regression(object):
       def fit(self,X,Y):
           ones = np.ones((np.shape(X)[0], 1))
           X= np.concatenate((ones, X), axis=1)
+          
+          #another way to initailize by produce random number comply to N(0,1) distribution
           #w = np.random.randn(np.shape(X)[1]+ 1)
+            
+          #set all weight to zero
           w=np.zeros(np.shape(X)[1])
           iter_last=self.iter
           costs_record = []
@@ -77,7 +81,7 @@ class logistic_regression(object):
                  iter_last=i
                  break
               w=w-self.eta*gradient(X,w,Y,self.l2reg)
-          
+          #show the process of gradient descent
           plt.clf()
           plt.plot(range(0,iter_last), costs_record)
           plt.show()
