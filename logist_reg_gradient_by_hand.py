@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 d1 = 100
 d2 = 2
 
-
+#produce number under N(0,1) 
 X = np.random.randn(d1,d2)
 
 # center the first 50 points at (-5,-5)
