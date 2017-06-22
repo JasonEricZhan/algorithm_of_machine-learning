@@ -151,3 +151,13 @@ x_aix=X[:,0]
 y_axis=-(model.w[0]/model.w[2])-(model.w[1]/model.w[2])*x_aix
 plt.plot(x_aix, y_axis)
 plt.show()
+
+
+"""
+ps:
+
+It has accuracy near to the sklearn logistic regression(or even better) at the eta is 0.0025,l2reg is 5,maxiter is 2500
+
+on the kaggle titanic tutorial
+
+"""
