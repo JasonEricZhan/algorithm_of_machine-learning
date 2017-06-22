@@ -104,13 +104,15 @@ model.fit(X,Y_an)
 
 
 """
+Decision boundary inference:
+
 1/(1+exp(w0+w1x1+w2x2))=0.5 , at this probability threshold :0.5
 
 and after reduce(move terms and get log), we can acquire w0+w1x1+w2x2=0
 
 after that, we can see x2=-w0/w2-(w1/w2)*x1
 
-
+plot as below:
 """
 
 plt.clf()
