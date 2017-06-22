@@ -156,7 +156,7 @@ plt.show()
 """
 ps:
 
-It has accuracy near to the scikit learn package logistic regression(or even better) at the eta is 0.0025,l2reg is 5,maxiter is 2500
+It has accuracy near to the scikit learn package logistic regression at the eta is 0.0025,l2reg is 5,maxiter is 2500
 
 on the kaggle titanic tutorial data
 
