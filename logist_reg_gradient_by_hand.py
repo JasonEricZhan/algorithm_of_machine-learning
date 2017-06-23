@@ -30,7 +30,7 @@ def sigmoid(z):
     return g
 
 
-def cross_entropy(x,w,y,l2reg):
+def cross_entropy(x,w,y):
     loss=0
     row=np.shape(y)[0]
     
@@ -40,7 +40,7 @@ def cross_entropy(x,w,y,l2reg):
       else:
           loss=loss-np.log(sigmoid(1-np.dot(x[i],w)))
     
-    loss=loss/row+(l2reg/(row*2))*np.dot(w,w)
+    loss=loss/row
     return loss
 
     
@@ -72,7 +72,8 @@ class logistic_regression(object):
           
           w=w-self.eta* gradient(X,w,Y,self.l2reg)
           for i in range(0,self.iter):
-              costs_record.append(cross_entropy(X,w,Y,self.l2reg))
+              costs_record.append(cross_entropy(X,w,Y))    
+              #loss function is separate to regularizer but include in gradient(augmenting function)
               if np.all(gradient(X,w,Y,self.l2reg) ==0):
                  iter_last=i
                  break
