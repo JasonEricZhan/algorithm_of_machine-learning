@@ -44,40 +44,56 @@ def cross_entropy(x,w,y):
     return loss
 
     
-def gradient(x,w,y,l2reg):
+def gradient(x,w,y,l2reg,size,count):
     gradient_error=0
     row=np.shape(x)[0]
     
-    for i in range(0,row):
-        pred=sigmoid(np.dot(x[i],w))
-        gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
+    if(size==row):
+        for i in range(0,row):
+             pred=sigmoid(np.dot(x[i],w))
+             gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
+        gradient_error=gradient_error/row
     
-    gradient_error=gradient_error/row
+    else:
+        range_array=np.arange(0,row,size)
+        for i in range(range_array[count],size+range_array[count]):
+            pred=sigmoid(np.dot(x[i],w))
+            gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
+        gradient_error=gradient_error/size
+    
     return gradient_error
  
 
 class logistic_regression(object):
-      def __init__(self,eta,l2reg=0,maxiter=1000):
+      def __init__(self,eta,l2reg=0,maxiter=1000,size=0):
           self.eta=eta
           self.iter=maxiter
           self.l2reg=l2reg #with l2 regularizer ,lambda coefficient in lagrange  mutiplier
+          self.batch_size=size
           
       def fit(self,X,Y):
           ones = np.ones((np.shape(X)[0], 1))
           X= np.concatenate((ones, X), axis=1)
+          row=np.shape(X)[0]
           #w = np.random.randn(np.shape(X)[1]+ 1)
           w=np.zeros(np.shape(X)[1])
           iter_last=self.iter
           costs_record = []
-          
-          w=w-self.eta* gradient(X,w,Y,self.l2reg)
+          if(self.batch_size==0):
+            self.batch_size=row
+         
+          count=0
+          w=w-self.eta* gradient(X,w,Y,self.l2reg,self.batch_size,count)
           for i in range(0,self.iter):
-              costs_record.append(cross_entropy(X,w,Y))    
+              count+=1
+              if count*self.batch_size >= row:
+                 count=0
+              costs_record.append(cross_entropy(X,w,Y))
               #loss function is separate to regularizer but include in gradient(augmenting function)
-              if np.all(gradient(X,w,Y,self.l2reg) ==0):
+              if np.all(gradient(X,w,Y,self.l2reg,self.batch_size,count) ==0):
                  iter_last=i
                  break
-              w=w-self.eta*gradient(X,w,Y,self.l2reg)
+              w=w-self.eta*gradient(X,w,Y,self.l2reg,self.batch_size,count)
           
           plt.clf()
           plt.plot(range(0,iter_last), costs_record)
@@ -100,7 +116,9 @@ class logistic_regression(object):
           predict_y=np.array(predict_y)
           return predict_y
 
-model=logistic_regression(0.01,l2reg=5,maxiter=100)
+#model=logistic_regression(0.01,l2reg=5,maxiter=100) ,same performance as batch size is 10
+model=logistic_regression(0.01,l2reg=5,maxiter=100,size=10)
+
 model.fit(X,Y_an)
 
 
