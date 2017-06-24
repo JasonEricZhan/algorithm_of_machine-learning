@@ -48,17 +48,21 @@ def gradient(x,w,y,l2reg,size,count):
     gradient_error=0
     row=np.shape(x)[0]
     
-    if(size==row):
+    if(size==row): # batch
         for i in range(0,row):
              pred=sigmoid(np.dot(x[i],w))
              gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
         gradient_error=gradient_error/row
     
-    else:
-        range_array=np.arange(0,row,size)
+    else:  # minibatch
+        range_array=np.arange(0,row-1,size)
         for i in range(range_array[count],size+range_array[count]):
-            pred=sigmoid(np.dot(x[i],w))
-            gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
+            if i >= row:
+                size=(i-range_array[count])+1
+                break
+            else:
+                pred=sigmoid(np.dot(x[i],w))
+                gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
         gradient_error=gradient_error/size
     
     return gradient_error
@@ -175,7 +179,8 @@ plt.show()
 """
 ps:
 
-It has accuracy near to the scikit learn package logistic regression at the eta is 0.0025,l2reg is 5,maxiter is 2500
+It has accuracy near (or even better) to the scikit learn package logistic regression at the eta is 0.008,l2reg is 5
+,maxiter is 3000,batch size is 200
 
 on the kaggle titanic tutorial data
 
