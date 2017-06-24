@@ -55,7 +55,7 @@ def gradient(x,w,y,l2reg,size,count):
         gradient_error=gradient_error/row
     
     else:  # minibatch
-        range_array=np.arange(0,row-1,size)
+        range_array=np.arange(0,row,size)
         for i in range(range_array[count],size+range_array[count]):
             if i >= row:
                 size=(i-range_array[count])+1
