@@ -56,7 +56,7 @@ def cost(T, pred):
 
 
 def forward_compute(X0, W1, b1, W2, b2):
-    A1 = sigmoid(np.dot(X,W1)+b1)#first layer is logistic
+    A1 = 2*sigmoid(2*(np.dot(X,W1)+b1))-1#first layer is tanh
     X1= np.dot(A1,W2) + b2        
     expX1 = np.exp(X1)
     A2 = expX1 / expX1.sum(axis=1, keepdims=True) #second layer is sofmax
@@ -94,7 +94,7 @@ class NNet_2D():
                     #loss function derivative
                     delta2[i,k]=-(output_layer[i,k]-Y[i,k])
             
-            delta1=np.dot(delta2,W2.T)*(1-hidden_layer)*hidden_layer
+            delta1=np.dot(delta2,W2.T)*(1-hidden_layer**2)
             
         
             
