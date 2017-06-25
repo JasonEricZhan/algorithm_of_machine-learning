@@ -63,7 +63,7 @@ def forward_compute(X0, W1, b1, W2, b2):
     return A2,A1
 
 class NNet_2D():
-    def __init__(self,eta,l2reg,D0,D1,D2,maxiter=1000):
+    def __init__(self,eta,l2reg=0,D0,D1,D2,maxiter=1000):
         self.eta=eta
         self.l2reg=l2reg
         self.iter=maxiter
@@ -113,6 +113,6 @@ class NNet_2D():
         
         return self
 
-ANN=NNet_2D(10e-5,0.0001,I,h,K,maxiter=5000)
+ANN=NNet_2D(10e-5,l2reg=0.0001,I,h,K,maxiter=5000)
 ANN.fit(X,T)
 
