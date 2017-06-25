@@ -87,13 +87,15 @@ class NNet_2D():
                 acurracy_result=acurracy(T,encode_pred)
                 print("accuarcy:",acurracy_result,"cost:",cost_result)
                 self.cost_record.append(cost(Y,output_layer))
-              
+            """ 
             delta2=np.zeros((output_layer.shape[0],output_layer.shape[1]))
+            
             for i in range(0,delta2.shape[0]):
                 for k in range(0,delta2.shape[1]):
                     #loss function derivative
                     delta2[i,k]=-(output_layer[i,k]-Y[i,k])
-            
+            """
+            delta2=-(output_layer-Y)
             delta1=np.dot(delta2,W2.T)*(1-hidden_layer**2)
             
         
