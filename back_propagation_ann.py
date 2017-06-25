@@ -109,11 +109,11 @@ class NNet_2D():
             b1=b1+self.eta*b1_delta1
             b2=b2+self.eta*b2_delta2
             
-        plt.clf()
-        plt.plot(self.cost_record)
-        plt.show()
+         plt.clf()
+         plt.plot(self.cost_record)
+         plt.show()
         
-        return self
+         return self
 
 ANN=NNet_2D(10e-5,l2reg=0.0001,I,h,K,maxiter=5000)
 ANN.fit(X,T)
