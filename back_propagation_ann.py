@@ -15,15 +15,15 @@ I = 2 # dimensionality of input
 h = 4 # hidden layer size
 K = 3 # number of classes
 
-N=400
+N=400 #the sample number of each class
 
 
 np.random.seed(1)
 
 #add some hint and noise
-X1 = 2+np.random.randn(N, I) + np.array([0, -0.5])
-X2 = 2+np.random.randn(N, I) + np.array([0.5, 0.5])
-X3 = 2+np.random.randn(N, I) + np.array([-0.5, 0.5])
+X1 = np.random.randn(N, I) + np.array([0, -0.5])
+X2 = np.random.randn(N, I) + np.array([0.5, 0.5])
+X3 = np.random.randn(N, I) + np.array([-0.5, 0.5])
 X = np.vstack([X1, X2, X3])
 
 Y = np.array([0]*N + [1]*N + [2]*N)
