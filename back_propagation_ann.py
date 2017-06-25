@@ -100,7 +100,7 @@ class NNet_2D():
             
         
             
-            #use Acent ,because is negative maxlikelihood as cost funtion
+            #use Acent ,because is maxlikelihood as cost funtion
             W1=W1+self.eta*(np.dot(X.T,delta1)+self.l2reg*W1)
             W2=W2+self.eta*(np.dot(hidden_layer.T,delta2)+self.l2reg*W2)
             
