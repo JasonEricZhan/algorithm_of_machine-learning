@@ -62,20 +62,24 @@ def forward_compute(X0, W1, b1, W2, b2):
     A2 = expX1 / expX1.sum(axis=1, keepdims=True) #second layer is sofmax
     return A2,A1
 
+
+
+
 class NNet_2D():
-    def __init__(self,eta,l2reg=0,D0,D1,D2,maxiter=1000):
+    def __init__(self,eta,D0,D1,D2,l2reg=0,maxiter=1000,rand=1):
         self.eta=eta
         self.l2reg=l2reg
+        self.rand=rand
         self.iter=maxiter
         self.D0=D0
         self.D1=D1
         self.Nclass=D2
     def fit(self,X,Y):
         self.cost_record=[]
-        W1 = np.random.randn(self.D0, self.D1)
-        b1 = np.random.randn(self.D1)
-        W2 = np.random.randn(self.D1, self.Nclass)
-        b2 = np.random.randn(self.Nclass)
+        W1 = np.random.randn(self.D0, self.D1)*2*self.rand-self.rand
+        b1 = np.random.randn(self.D1)*2*self.rand-self.rand
+        W2 = np.random.randn(self.D1, self.Nclass)*2*self.rand-self.rand
+        b2 = np.random.randn(self.Nclass)*2*self.rand-self.rand
         for i in range(0,self.iter):
             output_layer,hidden_layer=forward_compute(X, W1, b1, W2, b2)
             if(self.iter%100==0 ):
@@ -87,34 +91,68 @@ class NNet_2D():
                 acurracy_result=acurracy(T,encode_pred)
                 print("accuarcy:",acurracy_result,"cost:",cost_result)
                 self.cost_record.append(cost(Y,output_layer))
-            """ 
+              
             delta2=np.zeros((output_layer.shape[0],output_layer.shape[1]))
-            
+            #loss function derivative
+            """
             for i in range(0,delta2.shape[0]):
                 for k in range(0,delta2.shape[1]):
-                    #loss function derivative
                     delta2[i,k]=-(output_layer[i,k]-Y[i,k])
             """
             delta2=-(output_layer-Y)
-            delta1=np.dot(delta2,W2.T)*(1-hidden_layer**2)
             
+            """
+            delta1=np.zeros((hidden_layer.shape[0],W2.T.shape[1]))
+            
+            
+            for i in range(0,hidden_layer.shape[0]):
+                for k in range(0,W2.T.shape[1]):
+                   for j in range(0,W2.T.shape[0]):
+                         delta1[i,k]+=(delta2[i,j]*W2.T[j,k])
+                         delta1[i,k]=delta1[i,k]*(1-hidden_layer[i,k]**2)
+            """
+            delta1=np.dot(delta2,W2.T)*(1-hidden_layer**2)   
         
             
-            #use Acent ,because is maxlikelihood as cost funtion
-            W1=W1+self.eta*(np.dot(X.T,delta1)+self.l2reg*W1)
-            W2=W2+self.eta*(np.dot(hidden_layer.T,delta2)+self.l2reg*W2)
+            #use Acent ,because is negative maxlikelihood as cost funtion
+            """
+            gradient1=np.zeros((W1.shape[0],W1.shape[1]))
+            #gradient2=np.zeros
+            for i in range(0,W1.shape[0]):
+                for j in range(0,W1.shape[1]):
+                    for k in range(0,X.T.shape[1]):
+                        gradient1[i,j]+=X.T[i,k]*delta1[k,j]
+                        
+            gradient2=np.zeros((W2.shape[0],W2.shape[1]))
+            for i in range(0,W2.shape[0]):
+                for j in range(0,W2.shape[1]):
+                    for k in range(0,hidden_layer.T.shape[1]):
+                        gradient2[i,j]+=hidden_layer.T[i,k]*delta2[k,j]
+            
+            
+            W1=W1+self.eta*((gradient1)/X.shape[0]-self.l2reg*W1)
+            W2=W2+self.eta*((gradient2)/hidden_layer.shape[0]-self.l2reg*W2)
+            """
+            
+            W1=W1+self.eta*(np.dot(X.T,delta1)/X.shape[0]-self.l2reg*W1)
+            W2=W2+self.eta*(np.dot(hidden_layer.T,delta2)/hidden_layer.shape[0]-self.l2reg*W2)
             
             b2_delta2=delta2.sum(axis=0)
             b1_delta1=delta1.sum(axis=0)
-            b1=b1+self.eta*b1_delta1
-            b2=b2+self.eta*b2_delta2
+            b1=b1+self.eta*b1_delta1/X.shape[0]
+            b2=b2+self.eta*b2_delta2/hidden_layer.shape[0]
             
-         plt.clf()
-         plt.plot(self.cost_record)
-         plt.show()
+            
+        plt.clf()
+        plt.plot(self.cost_record)
+        plt.show()
         
-         return self
+        return self
 
-ANN=NNet_2D(10e-5,l2reg=0.0001,I,h,K,maxiter=5000)
+
+
+
+
+
+ANN=NNet_2D(0.05,I,h,K,l2reg=0.005,maxiter=5000,rand=5)
 ANN.fit(X,T)
-
