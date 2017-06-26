@@ -114,7 +114,7 @@ class NNet_2D():
             delta1=np.dot(delta2,W2.T)*(1-hidden_layer**2)   
         
             
-            #use Acent ,because is negative maxlikelihood as cost funtion
+            #use Ascent ,because is negative maxlikelihood as cost funtion
             """
             gradient1=np.zeros((W1.shape[0],W1.shape[1]))
             #gradient2=np.zeros
