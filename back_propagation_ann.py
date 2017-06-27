@@ -82,7 +82,7 @@ class NNet_2D():
         b2 = np.random.randn(self.Nclass)*2*self.rand-self.rand
         for i in range(0,self.iter):
             output_layer,hidden_layer=forward_compute(X, W1, b1, W2, b2)
-            if self.iter%100==0 :
+            if i%100==0 :
                 cost_result=cost(Y,output_layer)
                 unencode=np.argmax(output_layer, axis=1)
                 encode_pred=np.zeros((unencode.shape[0],self.Nclass))
