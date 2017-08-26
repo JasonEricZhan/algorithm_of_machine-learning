@@ -10,4 +10,4 @@ by mostly hand code to practice understanding & develope the optimize skill appl
 
 2.back_propagation_ann.py: artificial neural network implement backpropagate algorithm 
 
-( first layer is tanh , second layer is softmax)
+*first layer is tanh , second layer is softmax
