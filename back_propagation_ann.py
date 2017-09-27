@@ -168,7 +168,7 @@ class NNet_2D():
         return self
     
     def predict(self,pred_x):
-        output_layer,hidden_layer2,hidden_layer1=forward_compute(pred_x, self.w1, self.b1,self.w2, self.b2)
+        output_layer,hidden_layer=forward_compute(pred_x, self.w1, self.b1,self.w2, self.b2)
          
         return output_layer
 
