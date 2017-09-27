@@ -66,7 +66,7 @@ def forward_compute(X0, W1, b1, W2, b2):
 
 
 class NNet_2D():
-    def __init__(self,eta,D0,D1,D2,l2reg=0,maxiter=1000,rand=1):
+    def __init__(self,eta,D0,D1,D2,l2reg=0,maxiter=1000,rand=1,converge=0):
         self.eta=eta
         self.l2reg=l2reg
         self.rand=rand
@@ -74,6 +74,8 @@ class NNet_2D():
         self.D0=D0
         self.D1=D1
         self.Nclass=D2
+        self.converge=converge
+        
     def fit(self,X,Y):
         self.cost_record=[]
         W1 = np.random.randn(self.D0, self.D1)*2*self.rand-self.rand
@@ -137,22 +139,41 @@ class NNet_2D():
             W1=W1+self.eta*(np.dot(X.T,delta1)/X.shape[0]-self.l2reg*W1)
             W2=W2+self.eta*(np.dot(hidden_layer.T,delta2)/hidden_layer.shape[0]-self.l2reg*W2)
             
+            
+            
             b2_delta2=delta2.sum(axis=0)
             b1_delta1=delta1.sum(axis=0)
             b1=b1+self.eta*b1_delta1/X.shape[0]
             b2=b2+self.eta*b2_delta2/hidden_layer.shape[0]
             
-            
+            if self.converge==0:
+               pass
+            else:
+                if i /self.iter > self.converge:
+                  self.eta=self.eta*0.99
+                
+        self.w1=W1
+        self.w2=W2
+        
+        self.b1=b1
+        self.b2=b2
+        
+        return self
+    
+    def plot(self):
         plt.clf()
         plt.plot(self.cost_record)
         plt.show()
-        
+       
         return self
-
-
-
+    
+    def predict(self,pred_x):
+        output_layer,hidden_layer2,hidden_layer1=forward_compute(pred_x, self.w1, self.b1,self.w2, self.b2)
+         
+        return output_layer
 
 
 
 ANN=NNet_2D(0.05,I,h,K,l2reg=0.005,maxiter=5000,rand=5)
 ANN.fit(X,T)
+ANN.plot()
