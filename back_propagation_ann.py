@@ -56,7 +56,7 @@ def cost(T, pred):
 
 
 def forward_compute(X0, W1, b1, W2, b2):
-    A1 = 2*sigmoid(2*(np.dot(X,W1)+b1))-1#first layer is tanh
+    A1 = 2*sigmoid(2*(np.dot(X0,W1)+b1))-1#first layer is tanh
     X1= np.dot(A1,W2) + b2        
     expX1 = np.exp(X1)
     A2 = expX1 / expX1.sum(axis=1, keepdims=True) #second layer is sofmax
