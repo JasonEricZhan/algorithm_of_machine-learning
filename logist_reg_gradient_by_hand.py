@@ -105,14 +105,14 @@ class logistic_regression(object):
           self.w=w
           return self
           
-      def predict(self,X):
-          ones = np.ones((np.shape(X)[0], 1))
-          X= np.concatenate((ones, X), axis=1)
-          row=np.shape(X)[0]
+      def predict(self,test_X):
+          ones = np.ones((np.shape(test_X)[0], 1))
+          test_X= np.concatenate((ones, test_X), axis=1)
+          row=np.shape(test_X)[0]
           predict_y=[]
           #probability threshold :0.5
           for i in range(0,row):
-              if sigmoid(np.dot(X[i],self.w))>0.5:
+              if sigmoid(np.dot(test_X[i],self.w))>0.5:
                  answer=1
               else:
                  answer=0
