@@ -167,13 +167,13 @@ class NNet_2D():
        
         return self
     
-    def predict(self,test_x):
-        output_layer,hidden_layer=forward_compute(test_x, self.w1, self.b1,self.w2, self.b2)
+    def predict(self,test_X):
+        output_layer,hidden_layer=forward_compute(test_X, self.w1, self.b1,self.w2, self.b2)
          
-        pred_x = np.zeros((output_layer.shape[0], 1))
+        predict_y = np.zeros((output_layer.shape[0], 1))
         for i in range(0,output_layer.shape[0]):
-            pred_x[i]=np.argmax(output_layer[i])     
-        return pred_x
+            predict_y[i]=np.argmax(output_layer[i])     
+        return predict_y
 
 
 
