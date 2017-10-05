@@ -155,11 +155,11 @@ class NNet_2D():
                 
                 
             elif method=="ada" :
-                d_w1,ada_1_w=ada_grad.ada_grad(self.eta,ada_1_w,grad_w1)
-                d_w2,ada_2_w=ada_grad.ada_grad(self.eta,ada_2_w,grad_w2)
+                d_w1,ada_1_w=ada_grad.compute(self.eta,ada_1_w,grad_w1)
+                d_w2,ada_2_w=ada_grad.compute(self.eta,ada_2_w,grad_w2)
                 
-                d_b1,ada_1_b=ada_grad.ada_grad(self.eta,ada_1_b,grad_b1)
-                d_b2,ada_2_b=ada_grad.ada_grad(self.eta,ada_2_b,grad_b2)
+                d_b1,ada_1_b=ada_grad.compute(self.eta,ada_1_b,grad_b1)
+                d_b2,ada_2_b=ada_grad.compute(self.eta,ada_2_b,grad_b2)
                 
                 W1=W1+d_w1
                 W2=W2+d_w2
