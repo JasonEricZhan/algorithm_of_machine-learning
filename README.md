@@ -13,3 +13,5 @@ Also practice using software design concept to build package
 2.back_propagation_ann.py: artificial neural network implement backpropagate algorithm 
 
 *first layer is tanh , second layer is softmax
+
+3.ada_grad.py:adagrad optimization function
