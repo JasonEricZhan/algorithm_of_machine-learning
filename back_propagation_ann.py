@@ -8,7 +8,7 @@ Created on Sat Jun 24 19:25:23 2017
 
 import numpy as np
 import matplotlib.pyplot as plt
-
+import ada_grad
 
 
 I = 2 # dimensionality of input
