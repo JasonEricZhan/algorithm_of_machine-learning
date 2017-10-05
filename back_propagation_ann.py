@@ -76,12 +76,17 @@ class NNet_2D():
         self.Nclass=D2
         self.converge=converge
         
-    def fit(self,X,Y):
+    def fit(self,X,Y,method=None):
         self.cost_record=[]
         W1 = np.random.randn(self.D0, self.D1)*2*self.rand-self.rand
         b1 = np.random.randn(self.D1)*2*self.rand-self.rand
         W2 = np.random.randn(self.D1, self.Nclass)*2*self.rand-self.rand
         b2 = np.random.randn(self.Nclass)*2*self.rand-self.rand
+        if(method=="ada"):
+           ada_1_w=np.zeros((W1.shape[0],W1.shape[1]))
+           ada_2_w=np.zeros((W2.shape[0],W2.shape[1]))
+           ada_1_b=np.zeros((b1.shape[0]))
+           ada_2_b=np.zeros((b2.shape[0]))
         for i in range(0,self.iter):
             output_layer,hidden_layer=forward_compute(X, W1, b1, W2, b2)
             if i%100==0 :
@@ -135,16 +140,32 @@ class NNet_2D():
             W1=W1+self.eta*((gradient1)/X.shape[0]-self.l2reg*W1)
             W2=W2+self.eta*((gradient2)/hidden_layer.shape[0]-self.l2reg*W2)
             """
+            grad_w1=self.eta*(np.dot(X.T,delta1)/X.shape[0]-self.l2reg*W1)
+            grad_w2=self.eta*(np.dot(hidden_layer.T,delta2)/hidden_layer.shape[0]-self.l2reg*W2)
             
-            W1=W1+self.eta*(np.dot(X.T,delta1)/X.shape[0]-self.l2reg*W1)
-            W2=W2+self.eta*(np.dot(hidden_layer.T,delta2)/hidden_layer.shape[0]-self.l2reg*W2)
+            grad_b1=self.eta*delta1.sum(axis=0)/X.shape[0]
+            grad_b2=self.eta*delta2.sum(axis=0)/hidden_layer.shape[0]
+            if(method==None):
+                W1=W1+grad_w1
+                W2=W2+grad_w2
+                b1=b1+grad_b1
+                b2=b2+grad_b2
+                
+                
+            elif(method=="ada"):
+                d_w1,ada_1_w=ada_grad(self.eta,ada_1_w,grad_w1)
+                d_w2,ada_2_w=ada_grad(self.eta,ada_2_w,grad_w2)
+                
+                d_b1,ada_1_b=ada_grad(self.eta,ada_1_b,grad_b1)
+                d_b2,ada_2_b=ada_grad(self.eta,ada_2_b,grad_b2)
+                
+                W1=W1+d_w1
+                W2=W2+d_w2
+                b1=b1+d_b1
+                b2=b2+d_b2
+                
             
-            
-            
-            b2_delta2=delta2.sum(axis=0)
-            b1_delta1=delta1.sum(axis=0)
-            b1=b1+self.eta*b1_delta1/X.shape[0]
-            b2=b2+self.eta*b2_delta2/hidden_layer.shape[0]
+                
             
             if self.converge==0:
                pass
