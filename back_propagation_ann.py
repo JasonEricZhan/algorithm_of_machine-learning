@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import ada_grad
 
+np.random.seed(1)
 
 I = 2 # dimensionality of input
 h = 4 # hidden layer size
@@ -18,7 +19,6 @@ K = 3 # number of classes
 N=400
 
 
-np.random.seed(1)
 
 #add some hint and noise
 X1 = np.random.randn(N, I) + np.array([0, -2])
@@ -64,6 +64,8 @@ def forward_compute(X0, W1, b1, W2, b2):
 
 
 
+
+np.random.seed(1)
 
 class NNet_2D():
     def __init__(self,eta,D0,D1,D2,l2reg=0,maxiter=1000,rand=1,converge=0):
