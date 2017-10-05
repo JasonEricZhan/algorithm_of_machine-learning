@@ -84,7 +84,7 @@ class NNet_2D():
         b1 = np.random.randn(self.D1)*2*self.rand-self.rand
         W2 = np.random.randn(self.D1, self.Nclass)*2*self.rand-self.rand
         b2 = np.random.randn(self.Nclass)*2*self.rand-self.rand
-        if(method=="ada"):
+        if method=="ada" :
            ada_1_w=np.zeros((W1.shape[0],W1.shape[1]))
            ada_2_w=np.zeros((W2.shape[0],W2.shape[1]))
            ada_1_b=np.zeros((b1.shape[0]))
@@ -147,14 +147,14 @@ class NNet_2D():
             
             grad_b1=self.eta*delta1.sum(axis=0)/X.shape[0]
             grad_b2=self.eta*delta2.sum(axis=0)/hidden_layer.shape[0]
-            if(method==None):
+            if method==None :
                 W1=W1+grad_w1
                 W2=W2+grad_w2
                 b1=b1+grad_b1
                 b2=b2+grad_b2
                 
                 
-            elif(method=="ada"):
+            elif method=="ada" :
                 d_w1,ada_1_w=ada_grad(self.eta,ada_1_w,grad_w1)
                 d_w2,ada_2_w=ada_grad(self.eta,ada_2_w,grad_w2)
                 
