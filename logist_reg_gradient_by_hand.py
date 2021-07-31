@@ -51,7 +51,7 @@ def gradient(x,w,y,l2reg,size,count):
     if(size==row): # batch
         for i in range(0,row):
              pred=sigmoid(np.dot(x[i],w))
-             gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
+             gradient_error=gradient_error-(pred-y[i])*x[i]+(l2reg/row)*w
         gradient_error=gradient_error/row
     
     else:  # minibatch
@@ -62,7 +62,7 @@ def gradient(x,w,y,l2reg,size,count):
                 break
             else:
                 pred=sigmoid(np.dot(x[i],w))
-                gradient_error=gradient_error+(pred-y[i])*x[i]+(l2reg/row)*w
+                gradient_error=gradient_error-(pred-y[i])*x[i]+(l2reg/row)*w
         gradient_error=gradient_error/size
     
     return gradient_error
